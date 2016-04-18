@@ -1,4 +1,4 @@
-require File.expand_path("../../lib/roo", __FILE__)
+require File.expand_path("../../lib/roo_legacy", __FILE__)
 
 require 'vcr'
 

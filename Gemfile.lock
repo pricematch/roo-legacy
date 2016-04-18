@@ -8,6 +8,7 @@ GEM
     diff-lcs (1.2.5)
     faraday (0.8.7)
       multipart-post (~> 1.1)
+    ffi (1.9.10-java)
     git (1.2.5)
     google_drive (0.3.6)
       nokogiri (>= 1.4.4, != 1.5.2, != 1.5.1)
@@ -19,8 +20,8 @@ GEM
       git (>= 1.2.5)
       rake
       rdoc
-    json (1.7.7)
-    json (1.7.7-java)
+    json (1.8.3)
+    json (1.8.3-java)
     jwt (0.1.8)
       multi_json (>= 1.5)
     method_source (0.8.2)
@@ -41,6 +42,11 @@ GEM
       coderay (~> 1.0.5)
       method_source (~> 0.8)
       slop (~> 3.4)
+    pry (0.9.12.2-java)
+      coderay (~> 1.0.5)
+      method_source (~> 0.8)
+      slop (~> 3.4)
+      spoon (~> 0.0)
     pry-nav (0.2.3)
       pry (~> 0.9.10)
     rack (1.5.2)
@@ -64,6 +70,8 @@ GEM
     shoulda-context (1.0.0)
     shoulda-matchers (1.0.0)
     slop (3.4.6)
+    spoon (0.0.4)
+      ffi
     spreadsheet (0.8.2)
       ruby-ole (>= 1.0)
     vcr (2.5.0)
@@ -78,6 +86,7 @@ PLATFORMS
 DEPENDENCIES
   google_drive
   jeweler
+  json (~> 1.8.2)
   nokogiri
   pry
   pry-nav
@@ -87,3 +96,6 @@ DEPENDENCIES
   spreadsheet (> 0.6.4)
   vcr
   webmock
+
+BUNDLED WITH
+   1.11.2
