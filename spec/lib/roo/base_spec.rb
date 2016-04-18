@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Roo::GenericSpreadsheet do
+describe RooLegacy::GenericSpreadsheet do
   it 'is an alias of Base' do
-    expect(Roo::GenericSpreadsheet).to eq(Roo::Base)
+    expect(RooLegacy::GenericSpreadsheet).to eq(RooLegacy::Base)
   end
 end

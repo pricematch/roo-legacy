@@ -1,7 +1,7 @@
 require 'spreadsheet'
 
 # Class for handling Excel-Spreadsheets
-class Roo::Excel < Roo::Base
+class RooLegacy::Excel < RooLegacy::Base
   FORMULAS_MESSAGE = 'the spreadsheet gem does not support forumulas, so roo can not.'
   CHARGUESS =
     begin
@@ -21,7 +21,7 @@ class Roo::Excel < Roo::Base
       file_warning = options[:file_warning] || :error
       mode = options[:mode] || "rb+"
     else
-      warn 'Supplying `packed` or `file_warning` as separate arguments to `Roo::Excel.new` is deprecated. Use an options hash instead.'
+      warn 'Supplying `packed` or `file_warning` as separate arguments to `RooLegacy::Excel.new` is deprecated. Use an options hash instead.'
       packed = options
       mode = "rb+"
       file_warning = deprecated_file_warning
@@ -293,7 +293,7 @@ class Roo::Excel < Roo::Base
   end
 
   # Read the date-time cell and convert to,
-  # the date-time values for Roo
+  # the date-time values for RooLegacy
   def read_cell_date_or_time(row, idx)
     cell = read_cell_content(row, idx)
     cell = cell.to_s.to_f
@@ -332,7 +332,7 @@ class Roo::Excel < Roo::Base
   end
 
   # Read the cell and based on the class,
-  # return the values for Roo
+  # return the values for RooLegacy
   def read_cell(row, idx)
     cell = read_cell_content(row, idx)
     case cell

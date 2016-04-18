@@ -19,7 +19,7 @@
 
 require File.dirname(__FILE__) + '/test_helper'
 
-class TestRoo < Test::Unit::TestCase
+class TestRooLegacy < Test::Unit::TestCase
 
   OPENOFFICE   = true 	# do OpenOffice-Spreadsheet Tests? (.ods files)
   EXCEL        = true  	# do Excel Tests? (.xls files)
@@ -67,7 +67,7 @@ class TestRoo < Test::Unit::TestCase
     options[:format].each do |format|
       begin
         if FORMATS[format]
-          yield Roo::Spreadsheet.open(File.join(TESTDIR,
+          yield RooLegacy::Spreadsheet.open(File.join(TESTDIR,
             fixture_filename(options[:name], format)))
         end
       rescue => e
@@ -94,7 +94,7 @@ class TestRoo < Test::Unit::TestCase
 
   def test_sheets_csv
     if CSV
-      oo = Roo::CSV.new(File.join(TESTDIR,'numbers1.csv'))
+      oo = RooLegacy::CSV.new(File.join(TESTDIR,'numbers1.csv'))
       assert_equal ["default"], oo.sheets
       assert_raise(RangeError) { oo.default_sheet = "no_sheet" }
       assert_raise(TypeError)  { oo.default_sheet = [1,2,3] }
@@ -134,7 +134,7 @@ class TestRoo < Test::Unit::TestCase
       assert_equal "test", oo.cell(2,6)
       assert_equal :string, oo.celltype(2,6)
       assert_equal 11, oo.cell(2,7)
-      unless oo.kind_of? Roo::CSV
+      unless oo.kind_of? RooLegacy::CSV
         assert_equal :float, oo.celltype(2,7)
       end
       assert_equal 10, oo.cell(4,1)
@@ -147,7 +147,7 @@ class TestRoo < Test::Unit::TestCase
       assert_equal 12, oo.cell(4,'C')
       assert_equal 13, oo.cell(4,'D')
       assert_equal 14, oo.cell(4,'E')
-      unless oo.kind_of? Roo::CSV
+      unless oo.kind_of? RooLegacy::CSV
         assert_equal :date, oo.celltype(5,1)
         assert_equal Date.new(1961,11,21), oo.cell(5,1)
         assert_equal "1961-11-21", oo.cell(5,1).to_s
@@ -188,7 +188,7 @@ class TestRoo < Test::Unit::TestCase
 
   def test_libre_office
 	  if LIBREOFFICE
-      oo = Roo::LibreOffice.new(File.join(TESTDIR, "numbers1.ods"))
+      oo = RooLegacy::LibreOffice.new(File.join(TESTDIR, "numbers1.ods"))
       oo.default_sheet = oo.sheets.first
       assert_equal 41, oo.cell('a',12)
 	  end
@@ -203,7 +203,7 @@ class TestRoo < Test::Unit::TestCase
       assert_raise(RangeError) { oo.cell('C',5,"non existing sheet name")}
       assert_raise(RangeError) { oo.celltype('C',5,"non existing sheet name")}
       assert_raise(RangeError) { oo.empty?('C',5,"non existing sheet name")}
-      if oo.class == Roo::Excel
+      if oo.class == RooLegacy::Excel
         assert_raise(NotImplementedError) { oo.formula?('C',5,"non existing sheet name")}
         assert_raise(NotImplementedError) { oo.formula('C',5,"non existing sheet name")}
       else
@@ -284,7 +284,7 @@ class TestRoo < Test::Unit::TestCase
       assert_equal "A:string",oo.cell(4, 3)+":"+oo.celltype(4, 3).to_s
 
       # Cells values in row 5:
-      if oo.class == Roo::OpenOffice
+      if oo.class == RooLegacy::OpenOffice
         assert_equal "0.01:percentage",oo.cell(5, 1).to_s+":"+oo.celltype(5, 1).to_s
         assert_equal "0.01:percentage",oo.cell(5, 2).to_s+":"+oo.celltype(5, 2).to_s
         assert_equal "0.01:percentage",oo.cell(5, 3).to_s+":"+oo.celltype(5, 3).to_s
@@ -443,7 +443,7 @@ class TestRoo < Test::Unit::TestCase
     if EXCEL
       if ONLINE
         url = 'http://stiny-leonhard.de/bode-v1.xls.zip'
-        excel = Roo::Excel.new(url, :zip)
+        excel = RooLegacy::Excel.new(url, :zip)
         excel.default_sheet = excel.sheets.first
         assert_equal 'ist "e" im Nenner von H(s)', excel.cell('b', 5)
       end
@@ -454,7 +454,7 @@ class TestRoo < Test::Unit::TestCase
     if OPENOFFICE
       if ONLINE
         url = 'http://spazioinwind.libero.it/s2/rata.ods.zip'
-        sheet = Roo::OpenOffice.new(url, :zip)
+        sheet = RooLegacy::OpenOffice.new(url, :zip)
         #has been changed: assert_equal 'ist "e" im Nenner von H(s)', sheet.cell('b', 5)
         assert_in_delta 0.001, 505.14, sheet.cell('c', 33).to_f
       end
@@ -463,7 +463,7 @@ class TestRoo < Test::Unit::TestCase
 
   def test_excel_zipped
     if EXCEL
-      oo = Roo::Excel.new(File.join(TESTDIR,"bode-v1.xls.zip"), :zip)
+      oo = RooLegacy::Excel.new(File.join(TESTDIR,"bode-v1.xls.zip"), :zip)
       assert oo
       assert_equal 'ist "e" im Nenner von H(s)', oo.cell('b', 5)
     end
@@ -472,7 +472,7 @@ class TestRoo < Test::Unit::TestCase
   def test_openoffice_zipped
     if OPENOFFICE
       begin
-        oo = Roo::OpenOffice.new(File.join(TESTDIR,"bode-v1.ods.zip"), :zip)
+        oo = RooLegacy::OpenOffice.new(File.join(TESTDIR,"bode-v1.ods.zip"), :zip)
         assert oo
         assert_equal 'ist "e" im Nenner von H(s)', oo.cell('b', 5)
       end
@@ -530,7 +530,7 @@ class TestRoo < Test::Unit::TestCase
     end
     #if EXCELX
     #    #Datei gibt es noch nicht
-    #    oo = Roo::Excelx.new(File.join(TESTDIR,"Bibelbund1.xlsx"))
+    #    oo = RooLegacy::Excelx.new(File.join(TESTDIR,"Bibelbund1.xlsx"))
     #    oo.default_sheet = oo.sheets.first
     #    assert_equal "Tagebuch des Sekret\303\244rs.    Letzte Tagung 15./16.11.75 Schweiz", oo.cell(45,'A')
     #end
@@ -849,7 +849,7 @@ class TestRoo < Test::Unit::TestCase
       assert_equal 10.75       , erg[1]['Start time']
       assert_equal 12.50       , erg[1]['End time']
       assert_equal 0           , erg[1]['Pause']
-      assert_equal 1.75        , erg[1]['Sum'] unless oo.class == Roo::Excel
+      assert_equal 1.75        , erg[1]['Sum'] unless oo.class == RooLegacy::Excel
       assert_equal "Task 1"    , erg[1]['Comment']
     end
   end
@@ -902,13 +902,13 @@ class TestRoo < Test::Unit::TestCase
 
   def get_extension(oo)
     case oo
-    when Roo::OpenOffice
+    when RooLegacy::OpenOffice
       ".ods"
-    when Roo::Excel
+    when RooLegacy::Excel
       ".xls"
-    when Roo::Excelx
+    when RooLegacy::Excelx
       ".xlsx"
-    when Roo::Google
+    when RooLegacy::Google
       ""
     end
   end
@@ -970,45 +970,45 @@ class TestRoo < Test::Unit::TestCase
       oo.default_sheet = "Tabelle1"
       assert_equal 1, oo.first_row
       assert_equal 18, oo.last_row
-      assert_equal Roo::OpenOffice.letter_to_number('A'), oo.first_column
-      assert_equal Roo::OpenOffice.letter_to_number('G'), oo.last_column
+      assert_equal RooLegacy::OpenOffice.letter_to_number('A'), oo.first_column
+      assert_equal RooLegacy::OpenOffice.letter_to_number('G'), oo.last_column
       oo.default_sheet = "Name of Sheet 2"
       assert_equal 5, oo.first_row
       assert_equal 14, oo.last_row
-      assert_equal Roo::OpenOffice.letter_to_number('B'), oo.first_column
-      assert_equal Roo::OpenOffice.letter_to_number('E'), oo.last_column
+      assert_equal RooLegacy::OpenOffice.letter_to_number('B'), oo.first_column
+      assert_equal RooLegacy::OpenOffice.letter_to_number('E'), oo.last_column
       oo.default_sheet = "Sheet3"
       assert_equal 1, oo.first_row
       assert_equal 1, oo.last_row
-      assert_equal Roo::OpenOffice.letter_to_number('A'), oo.first_column
-      assert_equal Roo::OpenOffice.letter_to_number('BA'), oo.last_column
+      assert_equal RooLegacy::OpenOffice.letter_to_number('A'), oo.first_column
+      assert_equal RooLegacy::OpenOffice.letter_to_number('BA'), oo.last_column
       oo.default_sheet = "Sheet4"
       assert_equal 1, oo.first_row
       assert_equal 1, oo.last_row
-      assert_equal Roo::OpenOffice.letter_to_number('A'), oo.first_column
-      assert_equal Roo::OpenOffice.letter_to_number('E'), oo.last_column
+      assert_equal RooLegacy::OpenOffice.letter_to_number('A'), oo.first_column
+      assert_equal RooLegacy::OpenOffice.letter_to_number('E'), oo.last_column
       oo.default_sheet = "Sheet5"
       assert_equal 1, oo.first_row
       assert_equal 6, oo.last_row
-      assert_equal Roo::OpenOffice.letter_to_number('A'), oo.first_column
-      assert_equal Roo::OpenOffice.letter_to_number('E'), oo.last_column
+      assert_equal RooLegacy::OpenOffice.letter_to_number('A'), oo.first_column
+      assert_equal RooLegacy::OpenOffice.letter_to_number('E'), oo.last_column
     end
   end
 
   def test_should_raise_file_not_found_error
     if OPENOFFICE
       assert_raise(IOError) {
-        Roo::OpenOffice.new(File.join('testnichtvorhanden','Bibelbund.ods'))
+        RooLegacy::OpenOffice.new(File.join('testnichtvorhanden','Bibelbund.ods'))
       }
     end
     if EXCEL
       assert_raise(IOError) {
-        Roo::Excel.new(File.join('testnichtvorhanden','Bibelbund.xls'))
+        RooLegacy::Excel.new(File.join('testnichtvorhanden','Bibelbund.xls'))
       }
     end
     if EXCELX
       assert_raise(IOError) {
-        Roo::Excelx.new(File.join('testnichtvorhanden','Bibelbund.xlsx'))
+        RooLegacy::Excelx.new(File.join('testnichtvorhanden','Bibelbund.xlsx'))
       }
     end
     if GOOGLE
@@ -1214,32 +1214,32 @@ Sheet 3:
   def test_file_warning_default
     if OPENOFFICE
       assert_raises(TypeError, "test/files/numbers1.xls is not an openoffice spreadsheet") {
-        Roo::OpenOffice.new(File.join(TESTDIR,"numbers1.xls"))
+        RooLegacy::OpenOffice.new(File.join(TESTDIR,"numbers1.xls"))
       }
-      assert_raises(TypeError) { Roo::OpenOffice.new(File.join(TESTDIR,"numbers1.xlsx")) }
+      assert_raises(TypeError) { RooLegacy::OpenOffice.new(File.join(TESTDIR,"numbers1.xlsx")) }
     end
     if EXCEL
-      assert_raises(TypeError) { Roo::Excel.new(File.join(TESTDIR,"numbers1.ods")) }
-      assert_raises(TypeError) { Roo::Excel.new(File.join(TESTDIR,"numbers1.xlsx")) }
+      assert_raises(TypeError) { RooLegacy::Excel.new(File.join(TESTDIR,"numbers1.ods")) }
+      assert_raises(TypeError) { RooLegacy::Excel.new(File.join(TESTDIR,"numbers1.xlsx")) }
     end
     if EXCELX
-      assert_raises(TypeError) { Roo::Excelx.new(File.join(TESTDIR,"numbers1.ods")) }
-      assert_raises(TypeError) { Roo::Excelx.new(File.join(TESTDIR,"numbers1.xls")) }
+      assert_raises(TypeError) { RooLegacy::Excelx.new(File.join(TESTDIR,"numbers1.ods")) }
+      assert_raises(TypeError) { RooLegacy::Excelx.new(File.join(TESTDIR,"numbers1.xls")) }
     end
   end
 
   def test_file_warning_error
     if OPENOFFICE
-      assert_raises(TypeError) { Roo::OpenOffice.new(File.join(TESTDIR,"numbers1.xls"),false,:error) }
-      assert_raises(TypeError) { Roo::OpenOffice.new(File.join(TESTDIR,"numbers1.xlsx"),false,:error) }
+      assert_raises(TypeError) { RooLegacy::OpenOffice.new(File.join(TESTDIR,"numbers1.xls"),false,:error) }
+      assert_raises(TypeError) { RooLegacy::OpenOffice.new(File.join(TESTDIR,"numbers1.xlsx"),false,:error) }
     end
     if EXCEL
-      assert_raises(TypeError) { Roo::Excel.new(File.join(TESTDIR,"numbers1.ods"),false,:error) }
-      assert_raises(TypeError) { Roo::Excel.new(File.join(TESTDIR,"numbers1.xlsx"),false,:error) }
+      assert_raises(TypeError) { RooLegacy::Excel.new(File.join(TESTDIR,"numbers1.ods"),false,:error) }
+      assert_raises(TypeError) { RooLegacy::Excel.new(File.join(TESTDIR,"numbers1.xlsx"),false,:error) }
     end
     if EXCELX
-      assert_raises(TypeError) { Roo::Excelx.new(File.join(TESTDIR,"numbers1.ods"),false,:error) }
-      assert_raises(TypeError) { Roo::Excelx.new(File.join(TESTDIR,"numbers1.xls"),false,:error) }
+      assert_raises(TypeError) { RooLegacy::Excelx.new(File.join(TESTDIR,"numbers1.ods"),false,:error) }
+      assert_raises(TypeError) { RooLegacy::Excelx.new(File.join(TESTDIR,"numbers1.xls"),false,:error) }
     end
   end
 
@@ -1247,36 +1247,36 @@ Sheet 3:
     if OPENOFFICE
       assert_nothing_raised(TypeError) {
         assert_raises(Zip::ZipError) {
-          Roo::OpenOffice.new(File.join(TESTDIR,"numbers1.xls"),false, :warning)
+          RooLegacy::OpenOffice.new(File.join(TESTDIR,"numbers1.xls"),false, :warning)
         }
       }
       assert_nothing_raised(TypeError) {
         assert_raises(Errno::ENOENT) {
-          Roo::OpenOffice.new(File.join(TESTDIR,"numbers1.xlsx"),false, :warning)
+          RooLegacy::OpenOffice.new(File.join(TESTDIR,"numbers1.xlsx"),false, :warning)
         }
       }
     end
     if EXCEL
       assert_nothing_raised(TypeError) {
         assert_raises(Ole::Storage::FormatError) {
-          Roo::Excel.new(File.join(TESTDIR,"numbers1.ods"),false, :warning)
+          RooLegacy::Excel.new(File.join(TESTDIR,"numbers1.ods"),false, :warning)
         }
       }
       assert_nothing_raised(TypeError) {
         assert_raises(Ole::Storage::FormatError) {
-          Roo::Excel.new(File.join(TESTDIR,"numbers1.xlsx"),false, :warning)
+          RooLegacy::Excel.new(File.join(TESTDIR,"numbers1.xlsx"),false, :warning)
         }
       }
     end
     if EXCELX
       assert_nothing_raised(TypeError) {
         assert_raises(Errno::ENOENT) {
-          Roo::Excelx.new(File.join(TESTDIR,"numbers1.ods"),false, :warning)
+          RooLegacy::Excelx.new(File.join(TESTDIR,"numbers1.ods"),false, :warning)
         }
       }
       assert_nothing_raised(TypeError) {
         assert_raises(Zip::ZipError) {
-          Roo::Excelx.new(File.join(TESTDIR,"numbers1.xls"),false, :warning)
+          RooLegacy::Excelx.new(File.join(TESTDIR,"numbers1.xls"),false, :warning)
         }
       }
     end
@@ -1291,27 +1291,27 @@ Sheet 3:
 
       # xls
       assert_nothing_raised() {
-        Roo::OpenOffice.new(File.join(TESTDIR,"type_openoffice.xls"),false, :ignore)
+        RooLegacy::OpenOffice.new(File.join(TESTDIR,"type_openoffice.xls"),false, :ignore)
       }
       # xlsx
       assert_nothing_raised() {
-        Roo::OpenOffice.new(File.join(TESTDIR,"type_openoffice.xlsx"),false, :ignore)
+        RooLegacy::OpenOffice.new(File.join(TESTDIR,"type_openoffice.xlsx"),false, :ignore)
       }
     end
     if EXCEL
       assert_nothing_raised() {
-        Roo::Excel.new(File.join(TESTDIR,"type_excel.ods"),false, :ignore)
+        RooLegacy::Excel.new(File.join(TESTDIR,"type_excel.ods"),false, :ignore)
       }
       assert_nothing_raised() {
-        Roo::Excel.new(File.join(TESTDIR,"type_excel.xlsx"),false, :ignore)
+        RooLegacy::Excel.new(File.join(TESTDIR,"type_excel.xlsx"),false, :ignore)
       }
     end
     if EXCELX
       assert_nothing_raised() {
-        Roo::Excelx.new(File.join(TESTDIR,"type_excelx.ods"),false, :ignore)
+        RooLegacy::Excelx.new(File.join(TESTDIR,"type_excelx.ods"),false, :ignore)
       }
       assert_nothing_raised() {
-        Roo::Excelx.new(File.join(TESTDIR,"type_excelx.xls"),false, :ignore)
+        RooLegacy::Excelx.new(File.join(TESTDIR,"type_excelx.xls"),false, :ignore)
       }
     end
   end
@@ -1431,7 +1431,7 @@ Sheet 3:
 
   def test_cell_boolean
     with_each_spreadsheet(:name=>'boolean', :format=>[:openoffice, :excel, :excelx]) do |oo|
-      if oo.class == Roo::Excelx
+      if oo.class == RooLegacy::Excelx
         assert_equal "TRUE", oo.cell(1,1), "failure in "+oo.class.to_s
         assert_equal "FALSE", oo.cell(2,1), "failure in "+oo.class.to_s
       else
@@ -1656,7 +1656,7 @@ Sheet 3:
   def test_compare_large_spreadsheets
     # problematisch, weil Formeln in Excel nicht unterstützt werden
     if LONG_RUN
-      qq = Roo::OpenOffice.new(File.join('test',"Bibelbund.ods"))
+      qq = RooLegacy::OpenOffice.new(File.join('test',"Bibelbund.ods"))
       with_each_spreadsheet(:name=>'Bibelbund') do |oo|
         # p "comparing Bibelbund.ods with #{oo.class}"
         oo.sheets.each do |sh|
@@ -1668,7 +1668,7 @@ Sheet 3:
               c2.force_encoding("UTF-8") if c2.class == String
               assert_equal c1, c2, "diff in #{sh}/#{row}/#{col}}"
               assert_equal qq.celltype(row,col,sh), oo.celltype(row,col,sh)
-              assert_equal qq.formula?(row,col,sh), oo.formula?(row,col,sh) if oo.class != Roo::Excel
+              assert_equal qq.formula?(row,col,sh), oo.formula?(row,col,sh) if oo.class != RooLegacy::Excel
             end
           end
         end
@@ -1842,7 +1842,7 @@ Sheet 3:
 "0.0" instead of the value of cell A.
 
 With the attached test case, I ran the following code:
-spreadsheet = Roo::Excelx.new('formula_string_error.xlsx')
+spreadsheet = RooLegacy::Excelx.new('formula_string_error.xlsx')
 spreadsheet.default_sheet = 'sheet1'
 p "A: #{spreadsheet.cell(1, 1)}"
 p "B: #{spreadsheet.cell(2, 1)}"
@@ -1855,7 +1855,7 @@ where the expected result is
 "A: TestString"
 "B: TestString"
 =end
-      xlsx = Roo::Excelx.new(File.join(TESTDIR, "formula_string_error.xlsx"))
+      xlsx = RooLegacy::Excelx.new(File.join(TESTDIR, "formula_string_error.xlsx"))
       xlsx.default_sheet = xlsx.sheets.first
       assert_equal 'Teststring', xlsx.cell('a',1)
       assert_equal 'Teststring', xlsx.cell('a',2)
@@ -1927,7 +1927,7 @@ where the expected result is
       # Bei den OpenOffice-Dateien ist in diesem Feld in der XML-
       # Datei of: als Prefix enthalten, waehrend in dieser Datei
       # irgendetwas mit oooc: als Prefix verwendet wird.
-      oo = Roo::OpenOffice.new(File.join(TESTDIR,'dreimalvier.ods'))
+      oo = RooLegacy::OpenOffice.new(File.join(TESTDIR,'dreimalvier.ods'))
       oo.default_sheet = oo.sheets.first
       assert_equal '=SUM([.A1:.D1])', oo.formula('e',1)
       assert_equal '=SUM([.A2:.D2])', oo.formula('e',2)
@@ -1984,7 +1984,7 @@ where the expected result is
   def test_nil_rows_and_lines_csv
 	  # x_123
 	  if CSV
-		  oo = Roo::CSV.new(File.join(TESTDIR,'Bibelbund.csv'))
+		  oo = RooLegacy::CSV.new(File.join(TESTDIR,'Bibelbund.csv'))
 		  oo.default_sheet = oo.sheets.first
 		  assert_equal 1, oo.first_row
 	  end
@@ -2068,8 +2068,8 @@ where the expected result is
       }
       oo.save
 
-      oo1 = Roo::OpenOffice.new(File.join(TESTDIR,"numbers2.ods"))
-      oo2 = Roo::OpenOffice.new(File.join(TESTDIR,"bak_numbers2.ods"))
+      oo1 = RooLegacy::OpenOffice.new(File.join(TESTDIR,"numbers2.ods"))
+      oo2 = RooLegacy::OpenOffice.new(File.join(TESTDIR,"bak_numbers2.ods"))
       #p oo2.to_s
       assert_equal 999, oo2.cell('a',1), oo2.cell('a',1)
       assert_equal oo2.cell('a',1) + 7, oo1.cell('a',1)
@@ -2103,7 +2103,7 @@ where the expected result is
   end
 
   # def test_false_encoding
-  #   ex = Roo::Excel.new(File.join(TESTDIR,'false_encoding.xls'))
+  #   ex = RooLegacy::Excel.new(File.join(TESTDIR,'false_encoding.xls'))
   #   ex.default_sheet = ex.sheets.first
   #   assert_equal "Sheet1", ex.sheets.first
   #   ex.first_row.upto(ex.last_row) do |row|
@@ -2121,7 +2121,7 @@ where the expected result is
 
   def test_simple_google
     if GOOGLE
-      go = Roo::Google.new("egal")
+      go = RooLegacy::Google.new("egal")
       assert_equal "42", go.cell(1,1)
     end
   end
@@ -2130,17 +2130,17 @@ where the expected result is
     if ONLINE
       if OPENOFFICE
         assert_raises(RuntimeError) {
-          Roo::OpenOffice.new("http://gibbsnichtdomainxxxxx.com/file.ods")
+          RooLegacy::OpenOffice.new("http://gibbsnichtdomainxxxxx.com/file.ods")
         }
       end
       if EXCEL
         assert_raises(RuntimeError) {
-          Roo::Excel.new("http://gibbsnichtdomainxxxxx.com/file.xls")
+          RooLegacy::Excel.new("http://gibbsnichtdomainxxxxx.com/file.xls")
         }
       end
       if EXCELX
         assert_raises(RuntimeError) {
-          Roo::Excelx.new("http://gibbsnichtdomainxxxxx.com/file.xlsx")
+          RooLegacy::Excelx.new("http://gibbsnichtdomainxxxxx.com/file.xlsx")
         }
       end
     end
@@ -2148,9 +2148,9 @@ where the expected result is
 
   def test_download_uri_with_query_string
     dir = File.expand_path("#{File.dirname __FILE__}/files")
-    { xls:  [EXCEL,       Roo::Excel],
-      xlsx: [EXCELX,      Roo::Excelx],
-      ods:  [OPENOFFICE,  Roo::OpenOffice]}.each do |extension, (flag, type)|
+    { xls:  [EXCEL,       RooLegacy::Excel],
+      xlsx: [EXCELX,      RooLegacy::Excelx],
+      ods:  [OPENOFFICE,  RooLegacy::OpenOffice]}.each do |extension, (flag, type)|
         if flag
           file = "#{dir}/simple_spreadsheet.#{extension}"
           url = "http://test.example.com/simple_spreadsheet.#{extension}?query-param=value"
@@ -2282,7 +2282,7 @@ where the expected result is
   #   if EXCELX
   #     if ONLINE
   #       url = 'http://stiny-leonhard.de/bode-v1.xlsx.zip'
-  #       excel = Roo::Excelx.new(url, :zip)
+  #       excel = RooLegacy::Excelx.new(url, :zip)
   #       assert_equal 'ist "e" im Nenner von H(s)', excel.cell('b', 5)
   #     end
   #   end
@@ -2292,7 +2292,7 @@ where the expected result is
   #   # TODO: bode...xls bei Gelegenheit nach .xlsx konverieren lassen und zippen!
   #   if EXCELX
   #     # diese Datei gibt es noch nicht gezippt
-  #     excel = Roo::Excelx.new(File.join(TESTDIR,"bode-v1.xlsx.zip"), :zip)
+  #     excel = RooLegacy::Excelx.new(File.join(TESTDIR,"bode-v1.xlsx.zip"), :zip)
   #     assert excel
   #     assert_raises(ArgumentError) {
   #       assert_equal 'ist "e" im Nenner von H(s)', excel.cell('b', 5)
@@ -2306,7 +2306,7 @@ where the expected result is
     return unless CSV
     headers = ["TITEL", "VERFASSER", "OBJEKT", "NUMMER", "SEITE", "INTERNET", "PC", "KENNUNG"]
 
-    oo = Roo::Spreadsheet.open(File.join(TESTDIR, 'Bibelbund.csv'))
+    oo = RooLegacy::Spreadsheet.open(File.join(TESTDIR, 'Bibelbund.csv'))
     parsed = oo.parse(:headers => true)
     assert_equal headers, parsed[1].keys
   end
@@ -2319,7 +2319,7 @@ where the expected result is
 
   def test_parsing_xslx_from_numbers
     return unless EXCELX
-    xlsx  = Roo::Excelx.new(File.join(TESTDIR, "numbers-export.xlsx"))
+    xlsx  = RooLegacy::Excelx.new(File.join(TESTDIR, "numbers-export.xlsx"))
 
     xlsx.default_sheet = xlsx.sheets.first
     assert_equal 'Sheet 1', xlsx.cell('a',1)

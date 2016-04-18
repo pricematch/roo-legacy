@@ -22,7 +22,7 @@ end
 
 PORT = 12321
 puts "serving at port #{PORT}"
-svr = Server2.new('Roo', NS, '0.0.0.0', PORT)
+svr = Server2.new('RooLegacy', NS, '0.0.0.0', PORT)
 
 trap('INT') { svr.shutdown }
 svr.start

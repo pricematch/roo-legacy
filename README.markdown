@@ -1,6 +1,6 @@
 # README
 
-Roo implements read access for all spreadsheet types and read/write access for
+RooLegacy implements read access for all spreadsheet types and read/write access for
 Google spreadsheets. It can handle
 * OpenOffice
 * Excel
@@ -11,32 +11,32 @@ Google spreadsheets. It can handle
 
 ### XLS
 
-There is no support for formulas in Roo for .xls files - you can get the result
+There is no support for formulas in RooLegacy for .xls files - you can get the result
 of a formula but not the formula itself.
 
 ### Google Spreadsheet
 
-Using Roo to access Google spreadsheets requires you install the 'google-spreadsheet-ruby' gem separately.
+Using RooLegacy to access Google spreadsheets requires you install the 'google-spreadsheet-ruby' gem separately.
 
 ## License
 
-While Roo is licensed under the MIT / Expat license, please note that the 'spreadsheet' gem [is released under](https://github.com/zdavatz/spreadsheet/blob/master/LICENSE.txt) the GPLv3 license.
+While RooLegacy is licensed under the MIT / Expat license, please note that the 'spreadsheet' gem [is released under](https://github.com/zdavatz/spreadsheet/blob/master/LICENSE.txt) the GPLv3 license.
 
 ## Usage:
 
 ```ruby
 require 'roo'
 
-s = Roo::OpenOffice.new("myspreadsheet.ods")      # loads an OpenOffice Spreadsheet
-s = Roo::Excel.new("myspreadsheet.xls")           # loads an Excel Spreadsheet
-s = Roo::Google.new("myspreadsheetkey_at_google") # loads a Google Spreadsheet
-s = Roo::Excelx.new("myspreadsheet.xlsx")         # loads an Excel Spreadsheet for Excel .xlsx files
-s = Roo::CSV.new("mycsv.csv")                     # loads a CSV file
+s = RooLegacy::OpenOffice.new("myspreadsheet.ods")      # loads an OpenOffice Spreadsheet
+s = RooLegacy::Excel.new("myspreadsheet.xls")           # loads an Excel Spreadsheet
+s = RooLegacy::Google.new("myspreadsheetkey_at_google") # loads a Google Spreadsheet
+s = RooLegacy::Excelx.new("myspreadsheet.xlsx")         # loads an Excel Spreadsheet for Excel .xlsx files
+s = RooLegacy::CSV.new("mycsv.csv")                     # loads a CSV file
 
 # You can use CSV to load TSV files, or files of a certain encoding by passing
 # in options under the :csv_options key
-s = Roo::CSV.new("mytsv.tsv", csv_options: {col_sep: "\t"}) # TSV
-s = Roo::CSV.new("mycsv.csv", csv_options: {encoding: Encoding::ISO_8859_1}) # csv with explicit encoding
+s = RooLegacy::CSV.new("mytsv.tsv", csv_options: {col_sep: "\t"}) # TSV
+s = RooLegacy::CSV.new("mycsv.csv", csv_options: {encoding: Encoding::ISO_8859_1}) # csv with explicit encoding
 
 s.default_sheet = s.sheets.first             # first sheet in the spreadsheet file will be used
 
@@ -68,17 +68,17 @@ s.font(1,1).italic?
 s.font(1,1).underline?
 
 
-# Roo::Spreadsheet requires spreadsheet gem
+# RooLegacy::Spreadsheet requires spreadsheet gem
 require 'spreadsheet'
 
 # Spreadsheet.open can accept both files and paths
 
-xls = Roo::Spreadsheet.open('./new_prices.xls')
+xls = RooLegacy::Spreadsheet.open('./new_prices.xls')
 
 # If the File.path or provided path string does not have an extension, you can optionally
 # provide one as a string or symbol
 
-xls = Roo::Spreadsheet.open('./rails_temp_upload', extension: :xls)
+xls = RooLegacy::Spreadsheet.open('./rails_temp_upload', extension: :xls)
 
 # no more setting xls.default_sheet, just use this
 

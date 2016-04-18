@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Roo::Excelx::Format do
+describe RooLegacy::Excelx::Format do
   describe '#to_type' do
     FORMATS = {
       'General' => :float,
@@ -44,7 +44,7 @@ describe Roo::Excelx::Format do
       '#0_);[Red]\(0\)' => :float
     }.each do |format, type|
       it "translates #{format} to #{type}" do
-        Roo::Excelx::Format.to_type(format).should == type
+        RooLegacy::Excelx::Format.to_type(format).should == type
       end
     end
   end

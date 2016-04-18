@@ -11,7 +11,7 @@ require 'time'
 # :csv_options option.
 #
 
-class Roo::CSV < Roo::Base
+class RooLegacy::CSV < RooLegacy::Base
   def initialize(filename, options = {})
     super
   end

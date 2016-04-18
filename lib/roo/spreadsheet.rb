@@ -1,4 +1,4 @@
-module Roo
+module RooLegacy
   class Spreadsheet
     class << self
       def open(path, options = {})
@@ -14,17 +14,17 @@ module Roo
 
         case extension.downcase
         when '.xls'
-          Roo::Excel.new(path, options)
+          RooLegacy::Excel.new(path, options)
         when '.xlsx'
-          Roo::Excelx.new(path, options)
+          RooLegacy::Excelx.new(path, options)
         when '.ods'
-          Roo::OpenOffice.new(path, options)
+          RooLegacy::OpenOffice.new(path, options)
         when '.xml'
-          Roo::Excel2003XML.new(path, options)
+          RooLegacy::Excel2003XML.new(path, options)
         when ''
-          Roo::Google.new(path, options)
+          RooLegacy::Google.new(path, options)
         when '.csv'
-          Roo::CSV.new(path, options)
+          RooLegacy::CSV.new(path, options)
         else
           raise ArgumentError,
             "Can't detect the type of #{path} - please use the :extension option to declare its type."

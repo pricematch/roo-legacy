@@ -6,7 +6,7 @@ require 'syntax/convertors/html'
 require 'erb'
 require File.dirname(__FILE__) + '/../lib/roo/version.rb'
 
-version  = Roo::VERSION::STRING
+version  = RooLegacy::VERSION::STRING
 download = 'http://rubyforge.org/projects/roo'
 
 class Fixnum
@@ -36,7 +36,7 @@ end
 if ARGV.length >= 1
   src, template = ARGV
   template ||= File.dirname(__FILE__) + '/../website/template.rhtml'
-  
+
 else
   puts("Usage: #{File.split($0).last} source.txt [template.rhtml] > output.html")
   exit!

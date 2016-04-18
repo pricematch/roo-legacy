@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe Roo::Excel do
-  let(:excel) { Roo::Excel.new('test/files/boolean.xls') }
+describe RooLegacy::Excel do
+  let(:excel) { RooLegacy::Excel.new('test/files/boolean.xls') }
 
   describe '.new' do
     it 'creates an instance' do
-      expect(excel).to be_a(Roo::Excel)
+      expect(excel).to be_a(RooLegacy::Excel)
     end
   end
 

@@ -2,7 +2,7 @@ require 'date'
 require 'nokogiri'
 require 'spreadsheet'
 
-class Roo::Excelx < Roo::Base
+class RooLegacy::Excelx < RooLegacy::Base
   module Format
     EXCEPTIONAL_FORMATS = {
       'h:mm am/pm' => :date,
@@ -71,7 +71,7 @@ class Roo::Excelx < Roo::Base
       packed = options[:packed]
       file_warning = options[:file_warning] || :error
     else
-      warn 'Supplying `packed` or `file_warning` as separate arguments to `Roo::Excelx.new` is deprecated. Use an options hash instead.'
+      warn 'Supplying `packed` or `file_warning` as separate arguments to `RooLegacy::Excelx.new` is deprecated. Use an options hash instead.'
       packed = options
       file_warning = deprecated_file_warning
     end
@@ -561,7 +561,7 @@ Datei xl/comments1.xml
   # Extracts all needed files from the zip file
   def process_zipfile(tmpdir, zipfilename)
     @sheet_files = []
-    Roo::ZipFile.open(zipfilename) {|zf|
+    RooLegacy::ZipFile.open(zipfilename) {|zf|
       zf.entries.each {|entry|
         entry_name = entry.to_s.downcase
 

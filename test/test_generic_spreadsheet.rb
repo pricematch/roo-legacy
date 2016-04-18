@@ -4,7 +4,7 @@ require File.dirname(__FILE__) + '/test_helper'
 class TestBase < Test::Unit::TestCase
 
   def setup
-    @klass = Class.new(Roo::Base) do
+    @klass = Class.new(RooLegacy::Base) do
       def initialize(filename='some_file')
         super
         @filename = filename
@@ -32,77 +32,77 @@ class TestBase < Test::Unit::TestCase
     setup_test_sheet(@oo)
   end
 
-  context 'Roo::Base.letter_to_number(letter)' do
+  context 'RooLegacy::Base.letter_to_number(letter)' do
     should "give us 1 for 'A' and 'a'" do
-      assert_equal 1, Roo::Base.letter_to_number('A')
-      assert_equal 1, Roo::Base.letter_to_number('a')
+      assert_equal 1, RooLegacy::Base.letter_to_number('A')
+      assert_equal 1, RooLegacy::Base.letter_to_number('a')
     end
 
     should "give us the correct value for 'Z'" do
-      assert_equal 26, Roo::Base.letter_to_number('Z')
+      assert_equal 26, RooLegacy::Base.letter_to_number('Z')
     end
 
     should "give us the correct value for 'AA' regardless of case mixing" do
-      assert_equal 27, Roo::Base.letter_to_number('AA')
-      assert_equal 27, Roo::Base.letter_to_number('aA')
-      assert_equal 27, Roo::Base.letter_to_number('Aa')
-      assert_equal 27, Roo::Base.letter_to_number('aa')
+      assert_equal 27, RooLegacy::Base.letter_to_number('AA')
+      assert_equal 27, RooLegacy::Base.letter_to_number('aA')
+      assert_equal 27, RooLegacy::Base.letter_to_number('Aa')
+      assert_equal 27, RooLegacy::Base.letter_to_number('aa')
     end
 
     should "give us the correct value for 'AB'" do
-      assert_equal 28, Roo::Base.letter_to_number('AB')
+      assert_equal 28, RooLegacy::Base.letter_to_number('AB')
     end
 
     should "give us the correct value for 'AZ'" do
-      assert_equal 26*2, Roo::Base.letter_to_number('AZ')
+      assert_equal 26*2, RooLegacy::Base.letter_to_number('AZ')
     end
 
     should "give us the correct value for 'BZ'" do
-      assert_equal 26*3, Roo::Base.letter_to_number('BZ')
+      assert_equal 26*3, RooLegacy::Base.letter_to_number('BZ')
     end
 
     should "give us the correct value for 'ZZ'" do
-      assert_equal 26**2 + 26,Roo::Base.letter_to_number('ZZ')
+      assert_equal 26**2 + 26,RooLegacy::Base.letter_to_number('ZZ')
     end
   end
 
-  context "Roo::Base.number_to_letter" do
-    Roo::Base::LETTERS.each_with_index do |l,i|
+  context "RooLegacy::Base.number_to_letter" do
+    RooLegacy::Base::LETTERS.each_with_index do |l,i|
       should "return '#{l}' when passed #{i+1}" do
-        assert_equal l,Roo::Base.number_to_letter(i+1)
+        assert_equal l,RooLegacy::Base.number_to_letter(i+1)
       end
     end
 
     should "return 'AA' when passed 27" do
-      assert_equal 'AA',Roo::Base.number_to_letter(27)
+      assert_equal 'AA',RooLegacy::Base.number_to_letter(27)
     end
 
     should "return 'AZ' when passed #{26*2}" do
-      assert_equal 'AZ', Roo::Base.number_to_letter(26*2)
+      assert_equal 'AZ', RooLegacy::Base.number_to_letter(26*2)
     end
 
     should "return 'BZ' when passed #{26*3}" do
-      assert_equal 'BZ', Roo::Base.number_to_letter(26*3)
+      assert_equal 'BZ', RooLegacy::Base.number_to_letter(26*3)
     end
 
     should "return 'ZZ' when passed #{26**2 + 26}" do
-      assert_equal 'ZZ',Roo::Base.number_to_letter(26**2 + 26)
+      assert_equal 'ZZ',RooLegacy::Base.number_to_letter(26**2 + 26)
     end
 
     should "return 'AAA' when passed #{26**2 + 27}" do
-      assert_equal 'AAA',Roo::Base.number_to_letter(26**2 + 27)
+      assert_equal 'AAA',RooLegacy::Base.number_to_letter(26**2 + 27)
     end
 
     should "return 'ZZZ' when passed #{26**3 + 26**2 + 26}" do
-      assert_equal 'ZZZ',Roo::Base.number_to_letter(26**3 + 26**2 + 26)
+      assert_equal 'ZZZ',RooLegacy::Base.number_to_letter(26**3 + 26**2 + 26)
     end
 
     should "return the correct letter when passed a Float" do
-      assert_equal 'A',Roo::Base.number_to_letter(1.0)
+      assert_equal 'A',RooLegacy::Base.number_to_letter(1.0)
     end
   end
 
-  context 'private method Roo::Base.uri?(filename)' do
+  context 'private method RooLegacy::Base.uri?(filename)' do
     should "return true when passed a filename starts with http(s)://" do
       assert_equal true, @oo.send(:uri?, 'http://example.com/')
       assert_equal true, @oo.send(:uri?, 'https://example.com/')
@@ -276,6 +276,6 @@ protected
     ",,,,,,\n,,,,,,\n,,,,,,\n,,,,,,\n1961-11-21,,,,,,\n,,,,,,\n,,,,,,\n,,\"thisisc8\",,,,\"thisisg8\"\n,,,,,,\n,,,,,,\n,,,,,,\n41,42,43,44,45,,\n,,,,,,\n,,,,,,\n,,43,44,45,,\n,,\"dreiundvierzig\",\"vierundvierzig\",\"fuenfundvierzig\",,\n"
   end
   def expected_csv_with_semicolons
-    expected_csv.gsub /\,/, ';' 
+    expected_csv.gsub /\,/, ';'
   end
 end

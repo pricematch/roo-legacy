@@ -5,15 +5,15 @@ require 'stringio'
 
 begin
   require 'zip/zipfilesystem'
-  Roo::ZipFile = Zip::ZipFile
+  RooLegacy::ZipFile = Zip::ZipFile
 rescue LoadError
   # For rubyzip >= 1.0.0
   require 'zip/filesystem'
-  Roo::ZipFile = Zip::File
+  RooLegacy::ZipFile = Zip::File
 end
 
 # Base class for all other types of spreadsheets
-class Roo::Base
+class RooLegacyLegacy::Base
   include Enumerable
 
   TEMP_PREFIX = "oo_"
@@ -276,7 +276,7 @@ class Roo::Base
   # column numbers are 1,2,3,... like in the spreadsheet
   def column(columnnumber,sheet=nil)
     if columnnumber.class == String
-      columnnumber = Roo::Excel.letter_to_number(columnnumber)
+      columnnumber = RooLegacy::Excel.letter_to_number(columnnumber)
     end
     sheet ||= @default_sheet
     read_cells(sheet)
@@ -500,11 +500,11 @@ class Roo::Base
 
   def file_type_check(filename, ext, name, warning_level, packed=nil)
     new_expression = {
-      '.ods' => 'Roo::OpenOffice.new',
-      '.xls' => 'Roo::Excel.new',
-      '.xlsx' => 'Roo::Excelx.new',
-      '.csv' => 'Roo::CSV.new',
-      '.xml' => 'Roo::Excel2003XML.new',
+      '.ods' => 'RooLegacy::OpenOffice.new',
+      '.xls' => 'RooLegacy::Excel.new',
+      '.xlsx' => 'RooLegacy::Excelx.new',
+      '.csv' => 'RooLegacy::CSV.new',
+      '.xml' => 'RooLegacy::Excel2003XML.new',
     }
     if packed == :zip
 	    # lalala.ods.zip => lalala.ods
@@ -691,7 +691,7 @@ class Roo::Base
   end
 
   def unzip(filename, tmpdir)
-    Roo::ZipFile.open(filename) do |zip|
+    RooLegacy::ZipFile.open(filename) do |zip|
       process_zipfile_packed(zip, tmpdir)
     end
   end

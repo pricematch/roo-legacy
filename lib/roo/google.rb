@@ -1,10 +1,10 @@
 begin
   require "google_drive"
 rescue LoadError => e
-  raise e, "Using Roo::Google requires the google_drive gem"
+  raise e, "Using RooLegacy::Google requires the google_drive gem"
 end
 
-class Roo::Google < Roo::Base
+class RooLegacy::Google < RooLegacy::Base
   attr_accessor :date_format, :datetime_format
 
   # Creates a new Google Drive object.
@@ -143,7 +143,7 @@ class Roo::Google < Roo::Base
     end
   end
 
-  # *DEPRECATED*: Use Roo::Google#set instead
+  # *DEPRECATED*: Use RooLegacy::Google#set instead
   def set_value(row,col,value,sheet=nil)
     warn "[DEPRECATION] `set_value` is deprecated.  Please use `set` instead."
     set(row,col,value,sheet)

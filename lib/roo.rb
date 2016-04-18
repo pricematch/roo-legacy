@@ -1,20 +1,20 @@
-module Roo
+module RooLegacy
 
   VERSION = '1.12.1'
 
   def self.const_missing(const_name)
     case const_name
     when :Libreoffice
-      warn "`Roo::Libreoffice` has been deprecated. Use `Roo::LibreOffice` instead."
+      warn "`RooLegacy::Libreoffice` has been deprecated. Use `RooLegacy::LibreOffice` instead."
       LibreOffice
     when :Openoffice
-      warn "`Roo::Openoffice` has been deprecated. Use `Roo::OpenOffice` instead."
+      warn "`RooLegacy::Openoffice` has been deprecated. Use `RooLegacy::OpenOffice` instead."
       OpenOffice
     when :Csv
-      warn "`Roo::Csv` has been deprecated. Use `Roo::CSV` instead."
+      warn "`RooLegacy::Csv` has been deprecated. Use `RooLegacy::CSV` instead."
       CSV
     when :GenericSpreadsheet
-      warn "`Roo::GenericSpreadsheet` has been deprecated. Use `Roo::Base` instead."
+      warn "`RooLegacy::GenericSpreadsheet` has been deprecated. Use `RooLegacy::Base` instead."
       Base
     else
       super

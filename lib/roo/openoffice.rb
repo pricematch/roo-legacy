@@ -2,10 +2,10 @@ require 'date'
 require 'nokogiri'
 require 'cgi'
 
-class Roo::OpenOffice < Roo::Base
+class RooLegacy::OpenOffice < RooLegacy::Base
   class << self
     def extract_content(tmpdir, filename)
-      Roo::ZipFile.open(filename) do |zip|
+      RooLegacy::ZipFile.open(filename) do |zip|
         process_zipfile(tmpdir, zip)
       end
     end
@@ -36,13 +36,13 @@ class Roo::OpenOffice < Roo::Base
       file_warning = options[:file_warning] || :error
       tmpdir_root = options[:tmpdir_root]
     else
-      warn 'Supplying `packed`, `file_warning`, or `tmpdir_root` as separate arguments to `Roo::OpenOffice.new` is deprecated. Use an options hash instead.'
+      warn 'Supplying `packed`, `file_warning`, or `tmpdir_root` as separate arguments to `RooLegacy::OpenOffice.new` is deprecated. Use an options hash instead.'
       packed = options
       file_warning = deprecated_file_warning
       tmpdir_root = deprecated_tmpdir_root
     end
 
-    file_type_check(filename,'.ods','an Roo::OpenOffice', file_warning, packed)
+    file_type_check(filename,'.ods','an RooLegacy::OpenOffice', file_warning, packed)
     make_tmpdir(tmpdir_root) do |tmpdir|
       filename = download_uri(filename, tmpdir) if uri?(filename)
       filename = unzip(filename, tmpdir) if packed == :zip
@@ -165,7 +165,7 @@ class Roo::OpenOffice < Roo::Base
     end
   end
 
-  # version of the Roo::OpenOffice document
+  # version of the RooLegacy::OpenOffice document
   # at 2007 this is always "1.0"
   def officeversion
     oo_version
@@ -255,7 +255,7 @@ class Roo::OpenOffice < Roo::Base
   def set_cell_values(sheet,x,y,i,v,value_type,formula,table_cell,str_v,style_name)
     key = [y,x+i]
     @cell_type[sheet] = {} unless @cell_type[sheet]
-    @cell_type[sheet][key] = Roo::OpenOffice.oo_type_2_roo_type(value_type)
+    @cell_type[sheet][key] = RooLegacy::OpenOffice.oo_type_2_roo_type(value_type)
     @formula[sheet] = {} unless @formula[sheet]
     if formula
       ['of:', 'oooc:'].each do |prefix|
@@ -415,8 +415,8 @@ class Roo::OpenOffice < Roo::Base
     @comments_read[sheet] = true
   end
 
-  # Only calls read_cells because Roo::Base calls read_comments
-  # whereas the reading of comments is done in read_cells for Roo::OpenOffice-objects
+  # Only calls read_cells because RooLegacy::Base calls read_comments
+  # whereas the reading of comments is done in read_cells for RooLegacy::OpenOffice-objects
   def read_comments(sheet=nil)
     read_cells(sheet)
   end
@@ -435,12 +435,12 @@ class Roo::OpenOffice < Roo::Base
   end
 
   def read_styles(style_elements)
-    @style_definitions['Default'] = Roo::OpenOffice::Font.new
+    @style_definitions['Default'] = RooLegacy::OpenOffice::Font.new
     style_elements.each do |style|
       next unless style.name == 'style'
       style_name = attr(style,'name')
       style.each do |properties|
-        font = Roo::OpenOffice::Font.new
+        font = RooLegacy::OpenOffice::Font.new
         font.bold = attr(properties,'font-weight')
         font.italic = attr(properties,'font-style')
         font.underline = attr(properties,'text-underline-style')
@@ -491,6 +491,6 @@ class Roo::OpenOffice < Roo::Base
   end
 end # class
 
-# LibreOffice is just an alias for Roo::OpenOffice class
-class Roo::LibreOffice < Roo::OpenOffice
+# LibreOffice is just an alias for RooLegacy::OpenOffice class
+class RooLegacy::LibreOffice < RooLegacy::OpenOffice
 end

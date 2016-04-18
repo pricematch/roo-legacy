@@ -2,7 +2,7 @@ require 'date'
 require 'base64'
 require 'nokogiri'
 
-class Roo::Excel2003XML < Roo::Base
+class RooLegacy::Excel2003XML < RooLegacy::Base
 
   # initialization and opening of a spreadsheet file
   # values for packed: :zip
@@ -11,7 +11,7 @@ class Roo::Excel2003XML < Roo::Base
       packed = options[:packed]
       file_warning = options[:file_warning] || :error
     else
-      warn 'Supplying `packed` or `file_warning` as separate arguments to `Roo::Excel2003XML.new` is deprecated. Use an options hash instead.'
+      warn 'Supplying `packed` or `file_warning` as separate arguments to `RooLegacy::Excel2003XML.new` is deprecated. Use an options hash instead.'
       packed = options
       file_warning = deprecated_file_warning
     end
@@ -256,7 +256,7 @@ class Roo::Excel2003XML < Roo::Base
   def read_styles
     @doc.xpath("/#{@namespace}:Workbook/#{@namespace}:Styles/#{@namespace}:Style").each do |style|
       style_id = style['ID']
-      @style_definitions[style_id] = Roo::Excel2003XML::Font.new
+      @style_definitions[style_id] = RooLegacy::Excel2003XML::Font.new
       if font = style.at_xpath("./#{@namespace}:Font")
         @style_definitions[style_id].bold = font['Bold']
         @style_definitions[style_id].italic = font['Italic']
