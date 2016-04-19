@@ -38,7 +38,7 @@ Gem::Specification.new do |s|
     "lib/roo_legacy/roo_rails_helper.rb",
     "lib/roo_legacy/spreadsheet.rb",
     "lib/roo_legacy/worksheet.rb",
-    "roo.gemspec",
+    "roo-legacy.gemspec",
     "scripts/txt2html",
     "spec/fixtures/vcr_cassettes/google_drive.yml",
     "spec/fixtures/vcr_cassettes/google_drive_access_token.yml",
